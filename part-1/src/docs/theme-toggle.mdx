@@ -1,0 +1,60 @@
+{/* Source: Figma page "theme-toggle", read 2026-10-07. */}
+
+## Composition
+
+A single component: a two-segment toggle, 76 × 40, with a moon and a sun. The sun is the active thumb. It has no component properties.
+
+It nests two raw glyphs from the Lucide set (`moon`, `sun`), not Icon instances.
+
+<Callout title="Only one state is designed" kind="warning">
+  Figma: "Dark theme is out of scope: the second state is not designed." A state property was not created. The system has one variable mode, so the toggle cannot switch anything.
+</Callout>
+
+## Usage
+
+Page header, right side. Evidence: one occurrence on the dashboard.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Track fill', tokens: ['surface/control'] },
+  { part: 'Track padding, gap', tokens: ['dimension/4'] },
+  { part: 'Radius', tokens: ['radius/full'] },
+  { part: 'Thumb fill', tokens: ['surface/muted'] },
+  { part: 'Icons', tokens: ['icon/default'], note: '16 px, stroke 0.667 px' },
+  { part: 'Thumb shadow', note: 'Raw effect: 0 1 3, #ddd5ea. Not a style' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `theme` | `'light' \| 'dark'` | From the Figma mapping. |
+| `onChange` | `(theme) => void` | <Proposed /> |
+
+The dark position (thumb on the moon) is <Proposed />: it mirrors the drawn state.
+
+## Accessibility
+
+From Figma: `role="switch"`, or a radio group with the labels "Light" and "Dark". The portal uses a radio group with those labels.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | The moon icon is 16 px and the sun 14 px in the source; both are 16 on the copy. |
+| Observed | Thumb fill #faf9fb is merged into `surface/muted`. |
+| NEEDS CONFIRMATION | Selected and unselected states are one drawing. |
+
+## Source discrepancies
+
+| Topic | Finding |
+| --- | --- |
+| Moon segment | It has radius `radius/md` and the same raw shadow as the thumb but no fill, so nothing is visible. The portal draws no shadow there. |
+| Token audit | States "no raw values"; the thumb shadow is a raw effect. |

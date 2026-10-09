@@ -1,0 +1,173 @@
+{/* Source: Figma page "button", documentation frame 303:799, read 2026-10-07. Text is restructured for reading; meaning is unchanged. */}
+
+## Anatomy
+
+Button is an atom. It is a horizontal auto-layout pill with centred content.
+
+- **LeadingIcon** — an instance of the Icon component, never a drawn vector. It is optional through `showIcon`; its glyph, size and colour are exposed on the Button instance.
+- **Label** — text in the style `typography/body-sm-strong`, editable through the property `label`.
+
+Dependencies: Icon (nested, layer `LeadingIcon`).
+
+## Appearances
+
+| appearance | Used for (from the product screens) |
+| --- | --- |
+| `primary` | Issue card, Confirm |
+| `secondary` | Add user |
+| `tonal` | Buy euro |
+| `inverse` | Linked card, on the dark account card |
+
+**Rule:** inverse is for dark surfaces only. Its white outline is 12% and disappears on light backgrounds.
+
+**Not covered by Button:** icon-only round actions such as Send, Mic, Exchange and pagination arrows belong to IconButton. Toolbar pills of 28 px (Attach file, Create) belong to Chip.
+
+## Sizes and layout
+
+| size | Height | Padding | Gap | Icon | Used for |
+| --- | --- | --- | --- | --- | --- |
+| `md` | 40 px | 8 / 20 | 12 | 20 px | Normal page buttons |
+| `sm` | 32 px | 4 / 14 | 8 | 16 px | Table actions, for example the Cards action in the Users grid |
+
+`layout` is `default` (icon and label) or `icon-only` (a square of the control height; used for the Filter button on the Users screen).
+
+Width hugs the content. On the product screens some buttons fill their container (Confirm, Linked card, Buy euro); that is set by the parent layout, not by a Button property.
+
+## States
+
+All states except Default are marked APPROVED in Figma: they are built only from existing tokens and styles. Hover, pressed and focus-visible are interaction states (CSS pseudo-classes in code); disabled and loading are component properties.
+
+| State | primary | secondary | tonal | inverse |
+| --- | --- | --- | --- | --- |
+| Default | paint style `gradient-purple` | no fill, `border/default` outline | `surface/control` | no fill, `border/inverse-strong` outline |
+| Hover | `gradient-purple` + effect `shadow/soft` | fill `surface/muted` | `surface/control` + effect `shadow/soft` | fill `surface/inverse-hover` |
+| Pressed | fill `surface/action-pressed` | fill `surface/control`, icon `icon/default` | paint style `gradient-purple-subtle` | fill `surface/inverse-pressed`, icon `icon/inverse` |
+| Focus-visible | 1 px ring outside, `border/focus` | 1 px ring outside, `border/focus`; replaces the outline | 1 px ring outside, `border/focus` | 1 px ring outside, `border/focus-inverse`; replaces the outline |
+| Disabled | whole button at `opacity/disabled` (40%) | same | same | same |
+| Loading | LeadingIcon becomes `refresh-ccw`, rest as Default | same | same | same |
+
+<Callout title="Loading is a static placeholder in the source">
+  The Figma documentation says Loading uses the Lucide `refresh-ccw` glyph as a static placeholder because "there is no Spinner atom in the product", and marks it NEEDS CONFIRMATION. A Spinner component now exists in the file (page `spinner`). The portal renders the placeholder exactly as drawn and does not animate it.
+</Callout>
+
+## Content
+
+The label is any string. Figma shows three content states: a short label, a long label, and a label without an icon. The button grows with its label; truncation and wrapping rules are <NotDocumented />.
+
+## Usage
+
+| Screen element | appearance | Settings |
+| --- | --- | --- |
+| Add user (header) | `secondary` | icon `user-round-plus` |
+| Issue card (header) | `primary` | icon `plus` |
+| Confirm (Convert widget) | `primary` | `showIcon` = false, fills its container |
+| Linked card (account card) | `inverse` | icon `credit-card`, fills its container |
+| Buy euro (account card) | `tonal` | icon `plus`, fills its container |
+
+Do and don't examples are <NotDocumented />.
+
+## Design properties
+
+These are the component properties defined in Figma.
+
+<DesignProperties />
+
+The nested `LeadingIcon` instance also exposes the Icon properties `icon` (instance swap), `size` and `color`. Its default is `plus`.
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Height md / sm', tokens: ['size/control/md', 'size/control/sm'] },
+  { part: 'Padding left and right, md / sm', tokens: ['dimension/20', 'dimension/14'] },
+  { part: 'Padding top and bottom, md / sm', tokens: ['dimension/8', 'dimension/4'] },
+  { part: 'Gap md / sm', tokens: ['dimension/12', 'dimension/8'] },
+  { part: 'Radius', tokens: ['radius/full'] },
+  { part: 'Fill, primary', style: 'gradient-purple', note: '#8345d5 → #300071' },
+  { part: 'Fill, primary pressed', tokens: ['surface/action-pressed'] },
+  { part: 'Fill, tonal', tokens: ['surface/control'] },
+  { part: 'Fill, tonal pressed', style: 'gradient-purple-subtle', note: '#a663ff → #300071 at 20%' },
+  { part: 'Fill, secondary hover / pressed', tokens: ['surface/muted', 'surface/control'] },
+  { part: 'Fill, inverse hover / pressed', tokens: ['surface/inverse-hover', 'surface/inverse-pressed'] },
+  { part: 'Outline, secondary', tokens: ['border/default', 'borderWidth/hairline'] },
+  { part: 'Outline, inverse', tokens: ['border/inverse-strong', 'borderWidth/hairline'] },
+  { part: 'Focus ring', tokens: ['border/focus', 'border/focus-inverse', 'borderWidth/hairline'] },
+  { part: 'Hover elevation, primary and tonal', style: 'shadow/soft', note: 'Two layers, purple/500 at 22% and 12%' },
+  { part: 'Label', style: 'typography/body-sm-strong', note: 'DM Sans Medium 14, line height auto' },
+  { part: 'Label colour', tokens: ['text/inverse', 'text/primary'], note: 'inverse on primary and inverse; primary on secondary and tonal' },
+  { part: 'Icon colour', tokens: ['icon/inverse', 'icon/muted', 'icon/accent'], note: 'primary · secondary and inverse · tonal' },
+  { part: 'Icon size md / sm', tokens: ['size/icon/md', 'size/icon/sm'] },
+  { part: 'Disabled', tokens: ['opacity/disabled'], note: 'A percent; the other opacity tokens are fractions' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> There is no production component package. The API below belongs to the preview library in this portal (`src/ds/Button.tsx`). It follows the "Developer mapping" table in Figma and is pending developer validation.
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `appearance` | `'primary' \| 'secondary' \| 'tonal' \| 'inverse'` | `'primary'` | From Figma `appearance`. |
+| `size` | `'md' \| 'sm'` | `'md'` | From Figma `size`. |
+| `layout` | `'default' \| 'icon-only'` | `'default'` | From Figma `layout`. |
+| `leadingIcon` | Lucide icon name | none | Figma maps `showIcon` + `LeadingIcon` to one optional prop. |
+| `disabled` | `boolean` | `false` | Figma `state = disabled`. |
+| `loading` | `boolean` | `false` | Figma `state = loading`. Sets `aria-busy`. Ignoring clicks while loading is <Proposed />. |
+| `children` | `string` | none | Figma `label`. |
+| native button attributes | | | `onClick`, `type` (defaults to `button`), `aria-*` and the rest are passed through. |
+
+Hover, pressed and focus-visible are not props: they are handled by `:hover`, `:active` and `:focus-visible`, as the Figma mapping specifies. For `layout="icon-only"`, pass `aria-label`; requiring it is <Proposed />.
+
+## Accessibility
+
+From the Figma documentation:
+
+- Target height is 40 px.
+- Label `text/primary` on white and on `surface/control` has high contrast. The inverse label is white on the dark card; the primary label is white on the gradient.
+- Disabled at 40% opacity is intentionally low contrast.
+- "Keyboard and screen-reader behaviour need implementation validation."
+
+Verified gaps:
+
+- The Accessibility section says "Focus-visible is not designed (NEEDS CONFIRMATION)", but a focus-visible variant exists for every appearance, size and layout. See [Source discrepancies](#source-discrepancies).
+- The `sm` size is 32 px high. A minimum target size for table actions is <NotDocumented />.
+- Contrast of the 1 px focus ring against each surface is not stated in the source.
+
+In this portal the component renders a native `button`, so it is focusable, activates with Enter and Space, and exposes `disabled` and `aria-busy` to assistive technology.
+
+## Edge cases and decisions
+
+Recorded in Figma under "Edge cases and observed inconsistencies":
+
+| Status in Figma | Finding |
+| --- | --- |
+| Decided by Mary | Only size 40 for page buttons. Linked card and Buy euro were 38 px: they grow by 2 px and horizontal padding goes 24 → 20. |
+| Decided by Mary | Icon 20 px in all `md` buttons. Linked card and Buy euro had 16 px icons. |
+| Decided by Mary | Tonal fill = `#e8e4ee` (the theme-toggle colour). Buy euro was `#ece7f9`. |
+| Nearest token | Text 14/24 Medium without a style → `typography/body-sm-strong`. Line height is auto; the height is fixed, so nothing shifts. |
+| Rule | Inverse is for dark surfaces only. |
+
+## Source discrepancies
+
+The Figma documentation frame was written before the component set was extended. Where they disagree, the portal follows the live component set and the changelog, and lists the difference here.
+
+| Topic | Older documentation text | Live component set and changelog |
+| --- | --- | --- |
+| Sizes | "One size only: 40 px high" | Two sizes: `md` 40 px and `sm` 32 px |
+| Layout | Icon-only buttons are "not covered" | `layout = icon-only` exists |
+| Variant count | "24 variants (4 appearances × 6 states)" | 96 variants (× 2 layouts × 2 sizes) |
+| Secondary outline | `border/hairline` in the token table | `border/default` is bound on the variants |
+| Focus-visible | "Not designed" in the Accessibility section | Designed: 1 px ring, `border/focus` or `border/focus-inverse` |
+| Spinner | "No Spinner atom in the product" | A `spinner` page and component exist |
+| Fill width | Overview: "Fills the width of its container when layout is set to Fill" | `layout` has no Fill value; it is `default` or `icon-only` |
+| Icon-only width | — | Outlined `md` icon-only variants are 42 px wide; outlined `sm` ones are 32 px. The portal reproduces both. |
+
+## Changelog
+
+From the Figma documentation frame, dated 2026-09-21 ("autonomous run"):
+
+- Added `layout = icon-only` (40 × 40, used for the Filter button on the Users screen).
+- Added a second size, `sm` = 32 px (`size/control/sm`), used for the Cards action in the Users grid. Every state exists for every layout and size: 96 variants.
+- "Mary's rule '40 only' applies to normal page buttons; table actions are 32."
+- The secondary outline uses `border/default` (`#e8e4ee`), not `border/hairline`.
+- The focus ring is 1 px (`borderWidth/hairline`).
+- The hover shadow is the new effect style `shadow/soft`.
+- Modal buttons were 48 px in the source screens and are 40 px here; the note refers to an `APPROVALS-NEEDED.md` file that is not in the Figma file.

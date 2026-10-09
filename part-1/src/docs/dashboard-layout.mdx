@@ -1,0 +1,58 @@
+{/* Source: Figma page "dashboard-layout", documentation frame and component descriptions, read 2026-10-07. */}
+
+## Composition
+
+Template. Sidebar on the left and a translucent Content panel with two dashed placeholder slots.
+
+| Nested component | Instances | Note |
+| --- | --- | --- |
+| Sidebar | 1 | Left column |
+
+Evidence in Figma: the dashboard, 1920 × 1080.
+
+## Usage
+
+Duplicate the frame structure for each dashboard-style screen; the placeholders show where PageHeader and the content blocks go. Figma cannot place children inside an instance slot, so screens are frames that mirror the template, not instances of it.
+
+The second group under "Variants and states" assembles the dashboard from the components of this portal with synthetic data. It is an example, not a screen copied from Figma.
+
+Responsive behaviour is <NotDocumented />: only the 1920 × 1080 desktop frame exists. The preview keeps the design width and scales it down to fit.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Canvas', tokens: ['surface/canvas'], note: 'Created: neutral/200; the source used #e8e4ee.' },
+  { part: 'Content panel', tokens: ['surface/panel', 'radius/xl'], note: 'Created: alpha/white-70; the source used #fbfbfd at 70%.' },
+  { part: 'Content padding', tokens: ['dimension/12', 'dimension/24'] },
+  { part: 'Content gap', tokens: ['dimension/40'] },
+  { part: 'Outer padding, gap', tokens: ['dimension/24', 'dimension/20'] },
+]} />
+
+Figma reports no raw values left inside this component.
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `sidebar` | `ReactNode` | From the Figma developer mapping: a component with slots (sidebar, header, content). |
+| `header` | `ReactNode` | Slot for PageHeader. Shows the dashed placeholder when empty. |
+| `children` | `ReactNode` | The content slot. Shows the dashed placeholder when empty. |
+
+## Accessibility
+
+From Figma: provide skip-to-content and landmark regions (nav, main). The portal renders the content panel as `main` and the Sidebar as `nav`.
+
+Verified gap: a skip-to-content link is not implemented in the preview library.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Created | `surface/canvas` (neutral/200) and `surface/panel` (alpha/white-70): the source used #e8e4ee and #fbfbfd at 70%. |
+| NEEDS CONFIRMATION | Users, modals and dropdown screens need their own templates (list page, modal over scrim). |

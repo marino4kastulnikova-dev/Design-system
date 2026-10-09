@@ -1,0 +1,93 @@
+{/* Source: Figma page "icon-button", read 2026-10-07. */}
+
+## Anatomy
+
+A 32 × 32 centred auto-layout (`size/icon-button/md`) holding one Icon instance, size sm. The radius follows the appearance. The glyph, size and colour are exposed on the instance.
+
+One size only. The 28 px Mic button is a toolbar item and belongs to Chip; `size/icon-button/sm` (28) stays unused.
+
+## Appearances
+
+| appearance | Look | Used for |
+| --- | --- | --- |
+| `ghost` | no fill, `radius/sm`, `icon/default` | Pagination arrows, profile chevron |
+| `tonal` | fill `surface/control`, round, `icon/strong` | Send (AI input) |
+| `glass` | fill `surface/glass` + effect `glass/default`, round, `icon/muted` | Exchange, on the Convert card |
+| `soft` | fill `surface/muted`, round, `icon/default` | Modal close button (added in the changelog) |
+
+**Rule:** glass is translucent white. It needs a coloured or dark surface behind it; on plain white it is almost invisible.
+
+## States
+
+All states except Default are APPROVED in Figma. The recipe mirrors Button.
+
+| State | ghost | tonal | glass | soft |
+| --- | --- | --- | --- | --- |
+| Default | no fill | `surface/control` | `surface/glass` + glass effect | `surface/muted` |
+| Hover | `surface/muted` | + effect `shadow/soft` | `surface/glass-hover`, `border/default` outline, `icon/default` | `surface/control` + shadow |
+| Pressed | `surface/control` | paint style `gradient-purple-subtle` | `surface/glass-pressed`, outline, `icon/default` | `surface/accent-subtle` |
+| Focus-visible | 1 px ring outside, `border/focus` | same | same | same |
+| Disabled | `opacity/disabled` (40%) | same | same | same |
+
+The `soft` column is read from the variants: the documentation frame does not describe it.
+
+## Usage
+
+| Screen element | Appearance | Icon |
+| --- | --- | --- |
+| Pagination previous / next | ghost | `chevron-left` / `chevron-right` |
+| Profile chevron (sidebar footer) | ghost | `chevron-right` |
+| Send (AI input) | tonal | `send` |
+| Exchange (Convert card) | glass | `arrow-down` |
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Size', tokens: ['size/icon-button/md'] },
+  { part: 'Radius', tokens: ['radius/sm', 'radius/full'], note: 'ghost · tonal, glass, soft' },
+  { part: 'Fill, tonal', tokens: ['surface/control'] },
+  { part: 'Fill, glass', tokens: ['surface/glass', 'surface/glass-hover', 'surface/glass-pressed'] },
+  { part: 'Fill, soft', tokens: ['surface/muted', 'surface/control', 'surface/accent-subtle'] },
+  { part: 'Outline, glass hover and pressed', tokens: ['border/default'] },
+  { part: 'Icon colour', tokens: ['icon/default', 'icon/strong', 'icon/muted'] },
+  { part: 'Focus ring', tokens: ['border/focus', 'borderWidth/hairline'] },
+  { part: 'Disabled', tokens: ['opacity/disabled'] },
+  { part: 'Effects', style: 'shadow/soft, glass/default' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `appearance` | `'ghost' \| 'tonal' \| 'glass' \| 'soft'` | `'ghost'` | Figma `appearance`. |
+| `icon` | glyph name | by appearance | Figma exposed Icon. |
+| `disabled` | `boolean` | `false` | Figma `state = disabled`. |
+| `aria-label` | `string` | required | The Figma mapping says "aria-label is required". |
+
+Hover, pressed and focus-visible are CSS pseudo-classes, as the mapping specifies.
+
+## Accessibility
+
+From Figma: icon-only, so the parent must provide an accessible name ("Previous page", "Send message"). The 32 × 32 target is above the 24 × 24 minimum. The focus-visible ring is APPROVED. "Keyboard and screen-reader behaviour need implementation validation."
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | Ghost buttons use radius 8, the other icon buttons are circles. Kept: the radius follows the appearance. |
+| Observed | Send is 32 px; Mic is 28 px and translucent, so Mic moved to Chip. |
+
+## Source discrepancies
+
+| Topic | Documentation text | Live file |
+| --- | --- | --- |
+| Appearances | "15 variants (3 appearances × 5 states)" | 20 variants: `soft` was added (changelog) |
+| Glass hover and pressed | Fill change only | Also a 1 px `border/default` outline and `icon/default` |
+| Soft hover shadow | — | Two raw drop shadows with the same values as `shadow/soft`, not linked to the style |
+| Glass effect | `glass/default` | Approximated in the portal with a 4 px backdrop blur |

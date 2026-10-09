@@ -1,0 +1,46 @@
+{/* Source: Figma page "progress-bar", read 2026-10-07. */}
+
+## Anatomy
+
+- **ProgressBar** — the track: width Fill, height 6, radius full, clips content, fill `alpha/white-12`.
+- **Fill** — a frame with height 6, radius full and the paint style `gradient-progress`. Its width sets the value.
+
+**Rule:** made for dark surfaces. The track is white at 12%.
+
+## Value
+
+Figma has no numeric component property: the value is the width of the Fill layer divided by the width of the track. Two values are observed: 44% (IBAN: 145 of 326) and 35% (Wallet-1: 113 of 326). In code the mapping says a number prop from 0 to 100.
+
+No variants, no states: not interactive.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Height', tokens: ['dimension/6'], note: 'The documentation lists it; the height on the component is a raw 6' },
+  { part: 'Radius', tokens: ['radius/full'] },
+  { part: 'Track', tokens: ['alpha/white-12'], note: 'A primitive: a semantic surface/inverse-track is "not created yet"' },
+  { part: 'Fill', style: 'gradient-progress', note: '#9eed73 → #40cc8c' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `value` | `number` (0–100) | Figma "Fill width". |
+| `aria-label` | `string` | Required. |
+
+## Accessibility
+
+From Figma: needs `role="progressbar"` with `aria-valuenow`, `aria-valuemin` and `aria-valuemax`, and the text value next to it ("Spent 4,450.00 EUR"). Colour is not the only carrier: the numbers are written. The portal sets the role and the three values.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| NEEDS CONFIRMATION | The two fills are proportional widths, not a component property. If the product needs a value API, a variant per step or a code-driven fill should be agreed. |

@@ -1,0 +1,42 @@
+{/* Source: Figma page "section-header", read 2026-10-07. The documentation is a short six-section note. */}
+
+## Composition
+
+A molecule: the heading of a dashboard block with two actions. A Title text on the left and two exposed Button instances on the right (layers `Secondary action` and `Primary action`, size md).
+
+Layout: horizontal, space-between, height 40, width Fill. The gap between the actions is `dimension/4`.
+
+In Figma the note reads: "Added while rebuilding the dashboard strictly from components."
+
+## Usage
+
+Dashboard: the "Accounts" heading above the account cards, with Add user (secondary) and Issue card (primary).
+
+Other screens with a heading and actions can reuse it. The Users heading has a subtitle and is not covered yet.
+
+## Design properties
+
+<DesignProperties />
+
+The buttons are exposed instances: change label, icon and appearance on the instance.
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Title', tokens: ['text/primary'], style: 'typography/heading-lg' },
+  { part: 'Gap between actions', tokens: ['dimension/4'] },
+  { part: 'Height', tokens: ['size/control/md'], note: 'Follows the Button height; 40 is not bound on the root' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `title` | `string` | Figma `title`. Rendered as a heading. |
+| `actions` | nodes | <Proposed /> Defaults to the two buttons drawn in Figma. |
+
+## Accessibility
+
+<NotDocumented />. The portal renders the title as an `h2`; the right level depends on the page. <Proposed />

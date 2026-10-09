@@ -1,0 +1,53 @@
+{/* Source: Figma page "transactions-grid", documentation frame and component descriptions, read 2026-10-07. */}
+
+<Callout title="No documentation in Figma" kind="warning">
+The page "transactions-grid" contains two components and no documentation frame, status or description. Everything below is read from the components themselves; guidance is marked as not documented.
+</Callout>
+
+## Composition
+
+Two components: **TransactionsGridHeader** and **TransactionsGridRow** (state default / selected / hover). The row starts with a Checkbox, has a copy action next to the reference, and ends with a StatusBadge.
+
+Purpose and usage: <NotDocumented />
+
+## States
+
+| TransactionsGridRow state | Read from the component |
+| --- | --- |
+| `default` | Checkbox unchecked |
+| `hover` | The copy button next to the reference becomes visible |
+| `selected` | Row fill `surface/accent-subtle`, Checkbox checked |
+
+Focus, disabled, empty and loading states are <NotDocumented />.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Row fill, default / selected', tokens: ['surface/field', 'surface/accent-subtle'] },
+  { part: 'Header fill', tokens: ['surface/muted'] },
+  { part: 'Row border', tokens: ['border/hairline'] },
+  { part: 'Header labels', tokens: ['text/muted'] },
+  { part: 'Cell text', tokens: ['text/primary'] },
+  { part: 'Cell padding, gap', tokens: ['dimension/20', 'dimension/12', 'dimension/40'] },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| TransactionsGridRow | `row` | `GridTransaction` | <Proposed /> Cell texts and status. Figma defines only `state`. |
+| TransactionsGridRow | `selected`, `onSelect` | `boolean`, `(selected) => void` | Figma `state = selected`. |
+| TransactionsGridRow | `onCopy` | `(reference) => void` | <Proposed /> |
+| TransactionsGridHeader | `selection`, `onSelectAll` | `'unchecked' \| 'checked' \| 'indeterminate'`, `(next) => void` | <Proposed /> Uses the three Checkbox states. |
+
+## Accessibility
+
+<NotDocumented />
+
+Portal behaviour, <Proposed />: each row checkbox is named after its row, the header checkbox selects or clears all rows and shows `indeterminate` for a partial selection, and the copy button is named "Copy reference".

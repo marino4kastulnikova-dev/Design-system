@@ -1,0 +1,65 @@
+{/* Source: Figma page "transaction-row", documentation frame and component descriptions, read 2026-10-07. */}
+
+## Composition
+
+Molecule. Three components: **TransactionRow** (7 text properties and a Status badge), **TransactionsHeader** and **Pagination**.
+
+| Nested component | Instances | Note |
+| --- | --- | --- |
+| StatusBadge | 1 | Status (appearance and label per row) |
+| IconButton | 2 | Pagination arrows |
+
+Evidence in Figma: the dashboard has 6 rows, 1 header and 1 pagination bar.
+
+## Layout
+
+Column widths are set on the cells: 140 / fill / fill / 170 / 120 / 140 / 96 / 96 (date, user, type, merchant, card, amount, fee, status). There is no token for them.
+
+Hover, selected and empty states of a row are <NotDocumented />. For a selectable row see transactions-grid.
+
+## Usage
+
+Inside TransactionsPanel.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Row fill', tokens: ['surface/field'], note: 'Figma: white 60% bound to alpha/white-60.' },
+  { part: 'Header fill', tokens: ['surface/muted'], note: 'Source was #faf9fb (difference 4).' },
+  { part: 'Row border', tokens: ['border/hairline'] },
+  { part: 'Header labels', tokens: ['text/muted'] },
+  { part: 'Cell text', tokens: ['text/primary'] },
+  { part: 'Cell padding', tokens: ['dimension/20', 'dimension/12', 'dimension/10'] },
+]} />
+
+Figma reports no raw values left inside these components.
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| TransactionRow | `date`, `user`, `type`, `merchant`, `card`, `amount`, `fee` | `string` | Figma text properties, same names. |
+| TransactionRow | `status` | `{ appearance, label }` | From the Figma developer mapping. |
+| TransactionsHeader | none | | Fixed column labels, as drawn. |
+| Pagination | `page`, `pages`, `onChange` | `number`, `number`, `(page) => void` | <Proposed /> Figma defines no properties for Pagination. |
+
+The sample rows in the portal use synthetic names and merchants, not the texts of the Figma file.
+
+## Accessibility
+
+From Figma: use table row semantics. The portal renders rows with `role="row"` and cells with `role="cell"` / `role="columnheader"` inside a labelled table; the pagination arrows are named "Previous page" and "Next page" and are disabled at the ends. <Proposed />
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | Column widths are set on the cells (140 / fill / fill / 170 / 120 / 140 / 96 / 96); no token. |
+| Observed | Row fill white 60% is bound to `alpha/white-60`; header #faf9fb to `surface/muted` (difference 4). |
+
+Portal finding: the TransactionsHeader component in Figma contains a 700 px Divider that looks like a leftover; the portal does not reproduce it. <Proposed />

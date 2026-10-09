@@ -1,0 +1,52 @@
+{/* Source: Figma page "spinner", read 2026-10-07. */}
+
+## Anatomy
+
+A square root with no fill (`size/spinner/*`) holding one ellipse, **Arc**: arc data start 0, end 4.5 rad, inner radius 0.82, filled with the paint style `gradient-spinner`. It scales with the root.
+
+The arc is static in Figma. Rotation is called "an implementation detail" and motion is not designed.
+
+## Sizes
+
+| size | Token | Status in Figma |
+| --- | --- | --- |
+| `lg` · 64 | `size/spinner/lg` | OBSERVED: Convert modal — Processing |
+| `md` · 20 | `size/spinner/md` | APPROVED: no evidence yet; it would serve the Button loading state |
+
+No states. Colour variants (for example white for a primary button) do not exist and are NEEDS CONFIRMATION; the Button loading state keeps the `refresh-ccw` icon until then.
+
+## Usage
+
+Convert modal — Processing: Spinner lg centred above the title "Processing your conversion…".
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Size lg / md', tokens: ['size/spinner/lg', 'size/spinner/md'] },
+  { part: 'Fill', style: 'gradient-spinner', note: '#a663ff → #300071' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `size` | `'lg' \| 'md'` | `'lg'` | Figma `size`. |
+| `label` | `string` | `'Loading'` | Accessible status text. |
+| `animated` | `boolean` | `false` | <Proposed /> 1 s linear rotation, off under reduced motion. Not designed in Figma. |
+
+## Accessibility
+
+From Figma: needs `role="status"` or `aria-busy` and a text label. The rotation should respect `prefers-reduced-motion`. The portal sets `role="status"` with the label and honours reduced motion.
+
+## Source discrepancies
+
+| Topic | Finding |
+| --- | --- |
+| Arc length | The purpose says "a 270° arc"; the arc data is 0 to 4.5 rad, which is about 258°. The portal draws 4.5 rad. |
+| Button | Figma records the correction itself: earlier Button notes said there was no spinner in the product. |

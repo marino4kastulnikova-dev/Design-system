@@ -1,0 +1,48 @@
+{/* Source: Figma page "tooltip", read 2026-10-07. Sections 03 and 07 are absent from the Figma documentation. */}
+
+## Anatomy
+
+A single component with one text property, `label`: a small raised bubble with padding 6 / 10, radius `radius/sm`, fill `surface/raised` and the effect `shadow/soft`. There is no arrow.
+
+Evidence: a new component; the library had no tooltip. Its first use is the swap button in ConvertWidget.
+
+## Usage
+
+- Show on hover or keyboard focus of icon-only controls.
+- Place it 8 px from the control, centred on it; flip to the other side when there is no room.
+- One short line, sentence case, no full stop.
+- Not for errors or information the user must read.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Fill', tokens: ['surface/raised'] },
+  { part: 'Padding', tokens: ['dimension/10', 'dimension/6'] },
+  { part: 'Radius', tokens: ['radius/sm'] },
+  { part: 'Elevation', style: 'shadow/soft' },
+  { part: 'Label', tokens: ['text/primary'], style: 'typography/caption' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Component | Prop | Notes |
+| --- | --- | --- |
+| `Tooltip` | `label` | Figma `label`. The bubble itself. |
+| `WithTooltip` | `label`, `side` | <Proposed /> Wraps a control and shows the bubble on hover and focus, hides it on Escape and links it with `aria-describedby`. Flipping when there is no room is not implemented. |
+
+## Accessibility
+
+From Figma: link to the control with `aria-describedby`. Show on keyboard focus as well as hover; dismiss with Esc. Do not put interactive content inside. The portal implements all three.
+
+## Source discrepancies
+
+| Topic | Documentation text | Live component |
+| --- | --- | --- |
+| Label style | `typography/caption-strong` | `typography/caption` |
+| Stroke | `border/default`, `borderWidth/hairline` | The stroke weight is bound, but the stroke paint is hidden: no outline is visible. The portal draws none |
