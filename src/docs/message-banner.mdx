@@ -1,0 +1,43 @@
+{/* Source: Figma page "message-banner", read 2026-10-07. */}
+
+## Composition
+
+A single component: a pill with an Icon (`circle-alert`, md, colour danger) and a short message. Only the danger appearance exists.
+
+## Usage
+
+Inside a modal, under the heading. Evidence: Confirm payment — Expired: "You’re verified through your team’s account."
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Fill', tokens: ['status/danger-bg'] },
+  { part: 'Padding', tokens: ['dimension/8', 'dimension/12'] },
+  { part: 'Gap', tokens: ['dimension/8'] },
+  { part: 'Radius', tokens: ['radius/full'] },
+  { part: 'Icon', tokens: ['size/icon/md', 'icon/danger'] },
+  { part: 'Message', tokens: ['status/danger-text'], style: 'typography/caption' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `message` | `string` | Figma `message`. |
+
+## Accessibility
+
+From Figma: `role="alert"` for errors. The portal sets it.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | The icon was a drawn red circle with "!" text; it is the Lucide `circle-alert` here. |
+| NEEDS CONFIRMATION | Only the danger appearance is observed; success and info banners are not created. |

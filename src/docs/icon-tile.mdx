@@ -1,0 +1,63 @@
+{/* Source: Figma page "icon-tile", read 2026-10-07. */}
+
+## Anatomy
+
+A round, static tile with an Icon instance inside. It is not a button: the metric tiles were named button_48px in the source but are not interactive.
+
+- Square, `size/tile/md` (32) or `size/tile/lg` (64), radius full, fill by appearance.
+- The Icon colour follows the appearance; the glyph is swappable through the exposed property.
+
+## Variants
+
+| Variant | Used for | Default glyph |
+| --- | --- | --- |
+| neutral · md | Metric cards (Team members, API calls, Success rate, Volume) | `users` |
+| positive · lg | Convert modal — Success | `check` |
+| danger · lg | Convert modal — Failed | `x` |
+| neutral · lg | Not observed in the product | `users` |
+
+No states: not interactive.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Size md / lg', tokens: ['size/tile/md', 'size/tile/lg'] },
+  { part: 'Radius', tokens: ['radius/full'], note: 'positive and danger variants carry a raw radius of 100' },
+  { part: 'Fill, neutral', tokens: ['surface/accent-subtle'] },
+  { part: 'Fill, positive', tokens: ['surface/success-subtle'] },
+  { part: 'Fill, danger', tokens: ['surface/danger-subtle'] },
+  { part: 'Icon colour', tokens: ['icon/default', 'icon/success', 'icon/danger'] },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `appearance` | `'neutral' \| 'positive' \| 'danger'` | `'neutral'` | Figma `appearance`. |
+| `size` | `'md' \| 'lg'` | `'md'` | Figma `size`. |
+| `icon` | glyph name | by appearance | Figma exposed Icon. |
+
+## Accessibility
+
+From Figma: decorative by default; the text next to it carries the meaning. In the modals the status must also be written in text ("Converted 9,166.08 USDC", "Conversion failed"): colour and icon alone are not enough. The portal renders the tile with `aria-hidden`.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | Modal circles were the status colour at 4% opacity. |
+| NEEDS CONFIRMATION | Modals use a drawn SVG check and X (40 px frames). They are replaced by the Icon glyphs `check` and `x`. |
+
+## Source discrepancies
+
+| Topic | Documentation text | Live file |
+| --- | --- | --- |
+| Fill, positive and danger | `status/positive-bg`, `status/danger-bg` | `surface/success-subtle`, `surface/danger-subtle` (the 4% tints), with a glass effect |
+| Icon in lg tiles | "Icon lg 24" | neutral: 24 px. positive and danger: the Icon instance is resized to 32 px |
+| Effect | Not mentioned | positive and danger use a remote style named `glass`. The portal approximates it with a 4 px backdrop blur |

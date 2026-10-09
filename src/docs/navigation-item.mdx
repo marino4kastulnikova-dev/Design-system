@@ -1,0 +1,77 @@
+{/* Source: Figma page "navigation-item", read 2026-10-07. */}
+
+## Anatomy
+
+One row of the sidebar navigation (a molecule: icon, label and an interactive surface).
+
+- Root: horizontal auto-layout, width Fill (247 in the sidebar), height 48, padding 8 / 14, gap 12, `radius/md`.
+- **Icon** — Icon instance, md 20; colour `inverse-muted`, `inverse` when active.
+- **Label** — `typography/body-lg`, `text/inverse`.
+
+White text on transparent: it looks empty on a light background.
+
+## States
+
+| State | Surface | Icon | Status in Figma |
+| --- | --- | --- | --- |
+| Default | no fill | `icon/inverse-muted` | OBSERVED |
+| Hover | `surface/inverse-subtle` | `icon/inverse` | APPROVED |
+| Pressed | `surface/inverse-hover` | `icon/inverse` | APPROVED |
+| Selected | paint style `gradient-purple-subtle` | `icon/inverse` | OBSERVED |
+| Focus-visible | 1 px inside stroke, `border/focus-inverse` | `icon/inverse` | APPROVED |
+| Disabled | `opacity/disabled` (40%) | as default | APPROVED |
+
+## Usage
+
+Sidebar: Home (selected), Users, Cards, PayIn/PayOut, Other transactions, IBAN, Wallets, Crypto, Fee plans, Tariff, Billing, Docs. API logs and Settings are hidden in the source.
+
+The sidebar section titles ("Management", "Payments") are not part of this molecule: they stay in the Sidebar organism.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Height', tokens: ['size/control/lg'] },
+  { part: 'Padding', tokens: ['dimension/14', 'dimension/8'] },
+  { part: 'Gap', tokens: ['dimension/12'] },
+  { part: 'Radius', tokens: ['radius/md'] },
+  { part: 'Fill, hover / pressed', tokens: ['surface/inverse-subtle', 'surface/inverse-hover'] },
+  { part: 'Fill, selected', style: 'gradient-purple-subtle', note: '#a663ff → #300071 at 20%' },
+  { part: 'Label', tokens: ['text/inverse'], style: 'typography/body-lg' },
+  { part: 'Icon', tokens: ['size/icon/md', 'icon/inverse-muted', 'icon/inverse'] },
+  { part: 'Focus ring', tokens: ['border/focus-inverse', 'borderWidth/hairline'] },
+  { part: 'Disabled', tokens: ['opacity/disabled'] },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `selected` | `boolean` | Figma `state = selected`. Sets `aria-current="page"`. |
+| `disabled` | `boolean` | Figma `state = disabled`. |
+| `icon` | glyph name | Figma exposed Icon. |
+| `children` | `string` | Figma `label`. |
+| `href`, `onClick` | | <Proposed /> The item renders a link. |
+
+## Accessibility
+
+From Figma: the selected item needs `aria-current="page"`. The white label on the dark sidebar has high contrast; the `inverse-muted` icon (#7e7887) on #19202e is about 3.8:1. The focus-visible ring is APPROVED.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Correction | The earlier draft hover state had a light background with a white icon (invisible). The new hover uses a faint white fill. |
+| NEEDS CONFIRMATION | Hover, pressed, focus-visible and disabled do not exist in the product; they are proposals from existing tokens. |
+
+## Source discrepancies
+
+| Topic | Finding |
+| --- | --- |
+| Status wording | The states table marks hover, pressed, focus-visible and disabled APPROVED; the edge-case table marks the same states NEEDS CONFIRMATION. |
+| Token names | The tokens table names the hover / pressed fills `surface/inverse-hover, -pressed`; the variants bind `surface/inverse-subtle` (hover) and `surface/inverse-hover` (pressed). |

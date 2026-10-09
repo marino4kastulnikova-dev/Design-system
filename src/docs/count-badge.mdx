@@ -1,0 +1,37 @@
+{/* Source: Figma page "count-badge", component 523:5083, read 2026-10-07. The page has no documentation frame. */}
+
+<Callout title="No documentation in Figma" kind="warning">
+  The page contains only the component. Purpose, usage and accessibility are <NotDocumented />. Everything below is read from the component itself.
+</Callout>
+
+## Anatomy
+
+A pill 18 px high with a minimum width of 18 px: padding 0 / 6, radius full, fill `brand`, and a centred count in `typography/caption-strong` and `text/inverse`.
+
+The Button variants contain a hidden layer named `Count` of the same size (18 × 18), which suggests the badge is meant to sit inside a button. That use is not documented.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Fill', tokens: ['brand'] },
+  { part: 'Padding left and right', tokens: ['dimension/6'] },
+  { part: 'Radius', tokens: ['radius/full'] },
+  { part: 'Count', tokens: ['text/inverse'], style: 'typography/caption-strong' },
+  { part: 'Height', note: '18 px is a raw value: no variable is bound' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `count` | `number \| string` | Figma `count`. Overflow rules (for example 99+) are <NotDocumented />. |
+
+## Accessibility
+
+<NotDocumented />. A bare number has no meaning on its own: the surrounding control should describe it, for example "3 active filters". <Proposed />

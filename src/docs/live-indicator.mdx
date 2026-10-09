@@ -1,0 +1,48 @@
+{/* Source: Figma page "live-indicator", read 2026-10-07. */}
+
+## Composition
+
+A single component: a 16 px clock icon and caption text, with a 6 px gap. It has no component properties: the text is edited directly in the instance.
+
+It nests a component named `icon-clock`, not the Icon component.
+
+## Usage
+
+Page header, next to the theme toggle. Evidence: one occurrence on the dashboard.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Gap', tokens: ['dimension/6'] },
+  { part: 'Icon', tokens: ['icon/default'], note: '16 px, stroke 0.667 px' },
+  { part: 'Text', tokens: ['text/muted'], style: 'typography/caption' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `label` | `string` | Figma mapping: text → `label`. |
+| `live` | `boolean` | <Proposed /> Sets `aria-live="polite"`. |
+
+## Accessibility
+
+From Figma: use `aria-live="polite"` only if the text updates automatically. "Purely visual composition; behaviour and data come from the implementation."
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | The clock was icon-12 from the old library; it is a 16 px Lucide clock now (16 is the smallest icon). |
+
+## Source discrepancies
+
+| Topic | Documentation text | Live file |
+| --- | --- | --- |
+| Gap | "Gap 6 has no token"; "spacing not bound 1" | The gap is bound to `dimension/6` |

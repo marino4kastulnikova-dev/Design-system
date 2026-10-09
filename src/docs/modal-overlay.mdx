@@ -1,0 +1,60 @@
+{/* Source: Figma page "modal-overlay", documentation frame and component descriptions, read 2026-10-07. */}
+
+## Composition
+
+Organism. A single component: a scrim (`surface/scrim`) and one modal slot.
+
+| Nested component | Instances | Note |
+| --- | --- | --- |
+| ConfirmPaymentModal / ConvertModal | 1 | Instance-swap property `modal`; default ConfirmPaymentModal `state = active`. |
+
+Evidence in Figma: the Confirm payment and Convert result modals sit on a 55% black scrim over the dashboard.
+
+<Callout title="Documentation and component differ" kind="warning">
+The documentation frame says the modal is placed 228 px from the top. The component description, updated 2026-10-02, says the opposite: the modal is centred in the overlay both ways (auto layout, centre / centre, no manual top offset), and must not be positioned with top padding. The portal follows the newer description and centres the modal.
+</Callout>
+
+## Usage
+
+Put it as the last layer of a screen frame (absolute position, x = 0, y = 0) over the dashboard; switch the modal with the `modal` property.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Scrim', tokens: ['surface/scrim'], note: 'Bound, paint opacity 1.' },
+  { part: 'Minimum inset', tokens: ['dimension/20'], note: 'Portal only: keeps the modal off the viewport edge on small screens.' },
+]} />
+
+Raw values left in Figma: the fixed size 1920 × 1080 (desktop frame). The documentation also lists a top padding of 228, superseded by the description above.
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `children` | `ReactNode` | The Figma developer mapping calls this `modal` (ReactNode, dialog content). <Proposed /> Align the name. |
+| `open` | `boolean` | <Proposed /> |
+| `onClose` | `() => void` | <Proposed /> Called on Escape and on a press on the scrim. |
+| `labelledBy` | `string` | <Proposed /> Id of the modal title. |
+
+In the portal preview the overlay is contained in the preview frame, so it never covers the documentation.
+
+## Accessibility
+
+From Figma: modal semantics (`role="dialog"`, `aria-modal`, focus trap, scrim click) are implementation decisions. The portal's decisions, all <Proposed />:
+
+- `role="dialog"` with `aria-modal="true"`, labelled by the modal title.
+- Focus moves to the first focusable control on open, Tab cycles inside the dialog, and focus returns to the opener on close.
+- Escape and a press on the scrim close the dialog.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | In the source screens the scrim was a loose black 55% rectangle or frame fill; here the fill is the token `surface/scrim` and the modal sits inside via auto layout. |
+| NEEDS CONFIRMATION | Only a desktop 1920 × 1080 overlay exists; other breakpoints are not created. |

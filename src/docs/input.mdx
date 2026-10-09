@@ -1,0 +1,94 @@
+{/* Source: Figma page "input", read 2026-10-07. */}
+
+## Anatomy
+
+A single-line field on a translucent white surface. A select trigger is the same field with a trailing chevron.
+
+- **LeadingIcon** — Icon lg 24, muted; optional through `showLeadingIcon`.
+- **Value** — `typography/body-sm`; placeholder in `text/muted`, value in `text/primary`. It truncates.
+- **TrailingIcon** — Icon lg 24, muted; optional through `showTrailingIcon`. `chevron-down` for a select.
+
+One height: 40 px (`size/control/md`). The component is 240 px wide by default; in the product the search field is 290 and the selects are 182.
+
+## States
+
+Only default is observed; the others were approved by Mary on 2026-09-21. Read-only was approved on 2026-09-25.
+
+| State | Treatment |
+| --- | --- |
+| Default | fill `surface/field`, 1 px inside outline `border/hairline` |
+| Hover | fill `surface/field-hover` |
+| Focus | outline `border/focus` |
+| Error | outline `status/danger-text` |
+| Disabled | `opacity/disabled` (40%) |
+| Read-only | value only: no leading icon, trailing `copy` icon |
+
+## Usage
+
+| Screen element | Settings |
+| --- | --- |
+| Users — search field | leading icon `search`, placeholder, width 290 |
+| Users — All Statuses / All KYC | trailing `chevron-down`, no leading icon, width 182 |
+| Account details modal | read-only, trailing `copy` |
+| ConvertWidget (hidden wallet address field) | trailing `eye-closed` |
+
+The Filter button next to the search is an icon-only Button, not part of Input.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Height', tokens: ['size/control/md'] },
+  { part: 'Padding', tokens: ['dimension/16', 'dimension/8'] },
+  { part: 'Gap', tokens: ['dimension/12'] },
+  { part: 'Radius', tokens: ['radius/10'] },
+  { part: 'Fill, default / hover', tokens: ['surface/field', 'surface/field-hover'] },
+  { part: 'Outline', tokens: ['border/hairline', 'borderWidth/hairline'] },
+  { part: 'Outline, focus / error', tokens: ['border/focus', 'status/danger-text'] },
+  { part: 'Text', tokens: ['text/primary', 'text/muted'], style: 'typography/body-sm' },
+  { part: 'Icons', tokens: ['size/icon/lg', 'icon/muted'] },
+  { part: 'Disabled', tokens: ['opacity/disabled'] },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `value`, `placeholder`, `onChange` | native | The Figma mapping: "placeholder shows while value is empty". |
+| `leadingIcon`, `trailingIcon` | glyph name | Figma `showLeadingIcon` / `showTrailingIcon` + icon. |
+| `error` | `boolean` | Figma `state = error`. Sets `aria-invalid`. |
+| `disabled`, `readOnly` | `boolean` | Figma `state`. |
+| other native input attributes | | Passed through. |
+
+The portal renders a real text input. A complete select (trigger plus SelectMenu) is not a component in Figma and is not built here.
+
+## Accessibility
+
+From Figma:
+
+- The field needs a visible or programmatic label. The Users search has only a placeholder: NEEDS CONFIRMATION.
+- Error must not rely on the red stroke alone: add an error message.
+- Placeholder `text/muted` on white 60% is about 4:1.
+- Keyboard behaviour of the select (listbox) needs implementation validation.
+
+Verified gap: an error message element is not designed.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | The search placeholder was 16 px, the selects 14 px. One style now: `typography/body-sm`. |
+| Observed | The search field had a hairline stroke, the selects had none. Both have it now. |
+| Observed | Padding was 12 / 16 with an icon and 16 / 16 on selects, gap 12 vs 16. One padding 16 and gap 12 now. |
+
+## Source discrepancies
+
+| Topic | Documentation text | Live file |
+| --- | --- | --- |
+| Property defaults | `showLeadingIcon` true, `showTrailingIcon` false | `showLeadingIcon` false, `showTrailingIcon` true |
+| Tokens table | Fill listed as `surface/field`, value column says `surface/glass` | `surface/field` is bound |

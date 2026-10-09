@@ -1,0 +1,70 @@
+{/* Source: Figma page "select-menu", documentation frame 482:5163, read 2026-10-07. */}
+
+## Composition
+
+Two components. **SelectOption** is one row (molecule); **SelectMenu** is the raised panel that holds the rows (organism).
+
+- SelectMenu `kind = status` holds 6 options, `kind = kyc` holds 8.
+- The first option is selected (state `selected`, with a check); the rest are `default`. Hover is a state of the row.
+- The panel width is fixed at 200 px.
+
+Evidence in Figma: the Users filters "All Statuses" (Active, Inactive, Blocked, Pending, Suspended) and "All KYC" (Not Started, Started, Pending, Approved, Verified, Rejected, Inherited). The list content was supplied by Mary on 2026-09-25.
+
+## States
+
+| SelectOption state | Fill | Extra |
+| --- | --- | --- |
+| `default` | none | |
+| `hover` | `surface/muted` | |
+| `selected` | `surface/accent-subtle` | Icon `check`, size sm, colour `positive` |
+
+Focus, pressed and disabled states are <NotDocumented />.
+
+## Usage
+
+Open the menu under a select (Input) trigger with an 8 px gap. Swap `kind` to change the list; edit option labels on the nested SelectOption.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Panel fill', tokens: ['surface/raised'] },
+  { part: 'Panel radius', tokens: ['radius/lg'] },
+  { part: 'Panel padding, gap', tokens: ['dimension/8', 'dimension/4'] },
+  { part: 'Panel elevation', style: 'shadow/dropdown', note: 'Shared with DropdownPanel' },
+  { part: 'Row radius', tokens: ['radius/10'] },
+  { part: 'Row padding, gap', tokens: ['dimension/8', 'dimension/10'] },
+  { part: 'Row fill, hover / selected', tokens: ['surface/muted', 'surface/accent-subtle'] },
+  { part: 'Label', tokens: ['text/primary'], style: 'typography/body-sm-strong' },
+  { part: 'Check', tokens: ['icon/positive', 'size/icon/sm'] },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| SelectMenu | `kind` | `'status' \| 'kyc'` | From the Figma developer mapping. Picks one of the two drawn lists. |
+| SelectMenu | `options` | `string[]` | <Proposed /> A custom list; overrides `kind`. |
+| SelectMenu | `value`, `onChange` | `string`, `(value) => void` | <Proposed /> Single choice. |
+| SelectOption | `label`, `selected`, `onSelect` | | From Figma `label` and `state`. |
+
+## Accessibility
+
+From Figma: `role="listbox"` on the panel and `role="option"` on each row, with `aria-selected` on the checked option. The portal implements exactly that.
+
+Verified gaps:
+
+- Figma marks this NEEDS CONFIRMATION: "Selection semantics (single choice, keyboard, scroll for long lists) and the exact state list per screen are not specified." The portal uses the standard listbox keys (arrows, Home, End, Enter, Space). <Proposed />
+- No focus state is drawn for a row. The portal shows the system 1 px `border/focus` ring. <Proposed />
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | Native browser selects in the reference used a blue highlight and no panel; here the existing DropdownPanel look is reused. |
+| NEEDS CONFIRMATION | Only default, hover and selected exist. |

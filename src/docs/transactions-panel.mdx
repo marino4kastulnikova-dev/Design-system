@@ -1,0 +1,57 @@
+{/* Source: Figma page "transactions-panel", documentation frame and component descriptions, read 2026-10-07. */}
+
+## Composition
+
+Organism. A single component: title, table (header and 6 rows, one hidden) and pagination.
+
+| Nested component | Instances | Note |
+| --- | --- | --- |
+| TransactionsHeader | 1 | |
+| TransactionRow | 6 | One hidden |
+| Pagination | 1 | |
+
+Evidence in Figma: the dashboard, 5 visible rows and 1 hidden row.
+
+## Usage
+
+Bottom-left of the dashboard. Rows are edited through their text properties.
+
+Empty, loading and error states of the table are <NotDocumented />.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Panel fill', tokens: ['surface/card'], note: 'Source was #fcfbfe at 20%.' },
+  { part: 'Panel radius', tokens: ['radius/lg'] },
+  { part: 'Padding, gaps', tokens: ['dimension/24', 'dimension/20', 'dimension/16', 'dimension/12', 'dimension/8'] },
+  { part: 'Title', tokens: ['text/primary'], style: 'typography/heading-sm' },
+  { part: 'Table radius, border', tokens: ['radius/md', 'border/hairline'] },
+]} />
+
+Figma reports no raw values left inside this component. The table container uses a gap of −1 so that row borders overlap.
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `rows` | `Transaction[]` | From the Figma developer mapping ("array of transactions"). |
+| `title` | `string` | <Proposed /> Defaults to "Transactions". |
+| `page`, `pages`, `onPageChange` | `number`, `number`, `(page) => void` | <Proposed /> Passed to Pagination. Paging the data is left to the caller. |
+
+## Accessibility
+
+From Figma: real table semantics (table, th, td); status text is written, not colour-only. The portal uses ARIA table roles on the rows and keeps the status as text inside StatusBadge.
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | Table container uses gap −1 so row borders overlap. |
+| Observed | The hidden row had different text colours (kind, merchant in `text/primary`) and a smaller cell layout; it is now a normal row (still hidden). |
+| Observed | Card fill #fcfbfe at 20% is bound to `surface/card`. |

@@ -1,0 +1,76 @@
+{/* Source: Figma page "confirm-payment-modal", documentation frame and component descriptions, read 2026-10-07. */}
+
+<Callout title="The documentation frame is older than the component" kind="warning">
+The documentation frame describes a 3-D Secure card payment with `state` active / expired, Confirm and Decline, and lists IconButton and MessageBanner. The component was reworked on 2026-10-02 and its description now says otherwise. The portal follows the live component and its description; the purpose line at the top of this page is the older text from the documentation frame.
+</Callout>
+
+## Composition
+
+From the component description: the confirmation step before moving money between or out of the merchant's accounts.
+
+| `type` | Meaning |
+| --- | --- |
+| `conversion` | Exchange between currencies. The rate is locked and the timer shows for how long. `state = expired`: the rate is stale and the primary action is Update rate. |
+| `transfer` | Same-currency transfer between own wallets. No rate and no timer. |
+| `withdrawal` | Crypto to an external address. The full address is shown for checking; network and network fee are visible. |
+
+No 3-D Secure: that applies only to card purchases and stays in the bot.
+
+Four variants are drawn: conversion / active, conversion / expired, transfer / active, withdrawal / active. Expired transfer and withdrawal do not exist.
+
+Nested in the live component: StatusBadge (timer, conversion only), Divider, DetailRow, Button ×2. The IconButton and MessageBanner named in the documentation are not present.
+
+## Usage
+
+Shown over the dashboard behind a scrim (`surface/scrim`), inside ModalOverlay. Text values are edited on the nested instances.
+
+## Design properties
+
+<DesignProperties />
+
+The documentation frame lists only `state`; the `type` property was added with the rework.
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Panel fill', tokens: ['surface/raised'] },
+  { part: 'Panel radius', tokens: ['radius/2xl'], note: 'Created for the modal (24).' },
+  { part: 'Panel padding', tokens: ['dimension/48', 'dimension/32'] },
+  { part: 'Panel elevation', style: 'shadow/modal', note: 'In Figma the shadow is not linked to the style; its values equal shadow/modal.' },
+  { part: 'Detail card', tokens: ['surface/muted', 'radius/lg', 'dimension/20'] },
+  { part: 'Amount, active', tokens: ['text/primary'], style: 'typography/display' },
+  { part: 'Title', tokens: ['text/primary'], style: 'typography/heading/h3' },
+  { part: 'Subtitle', tokens: ['text/muted'] },
+]} />
+
+Raw values left in Figma: 1 text without a style (the expired amount, 28 / Medium, not in the type scale) and 2 unbound spacing values. The live modal binds the primitives `neutral/0` and `neutral/50` where the documentation names `surface/raised` and `surface/muted`; the values are the same.
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `type` | `'conversion' \| 'transfer' \| 'withdrawal'` | Figma `type`. |
+| `state` | `'active' \| 'expired'` | Figma `state`. Expired is drawn for conversion only. |
+| `title`, `subtitle`, `amount` | `string` | <Proposed /> Texts edited on the instance in Figma. |
+| `details` | `{ label, value, field? }[]` | <Proposed /> DetailRows; `field` renders the value as a read-only field (the withdrawal address). |
+| `badge` | `string` | <Proposed /> Timer label, conversion only. |
+| `confirmLabel`, `onConfirm`, `onCancel` | | <Proposed /> |
+
+The countdown itself is not implemented: the portal shows the label it is given.
+
+## Accessibility
+
+From Figma: `role="dialog"` with `aria-modal`, focus trapped, Escape closes; the countdown needs a live announcement. The dialog behaviour comes from ModalOverlay. The timer badge is a `role="status"` region, so a changed label is announced.
+
+## Edge cases and decisions
+
+These rows are from the documentation frame and predate the rework.
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | The amount is 32 px in the active state and 28 px in the expired one; the expired amount keeps its raw 28 / Medium (not in the type scale). |
+| Decided by Mary | Buttons are 40 px only: the source Confirm payment and Decline were 48 px (modal-action). They are 8 px shorter now: NEEDS CONFIRMATION (see APPROVALS-NEEDED.md). |
+| Observed | Countdown pill (32 px, 12 Medium) becomes StatusBadge accent · sm (24 px, 12 Regular). |
+| Created | `radius/2xl` (24) for the modal, `surface/raised`, `surface/scrim`. |

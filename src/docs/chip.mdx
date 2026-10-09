@@ -1,0 +1,90 @@
+{/* Source: Figma page "chip", read 2026-10-07. */}
+
+## Anatomy
+
+A small translucent pill the user can press.
+
+- **LeadingIcon** — Icon instance, size sm, colour strong. Optional through `showIcon`; always visible in the icon-only layout.
+- **Label** — `typography/caption-strong`, `text/muted`. Absent in the icon-only layout.
+
+**Rule:** the translucent white fill needs a coloured or dark surface behind it (the AI panel is lavender).
+
+**Not covered:** currency selectors (USDT / USDC) are TokenSelect molecules; the page-number box is part of Pagination.
+
+## Sizes and layout
+
+| size | Height token | Padding | Used for |
+| --- | --- | --- | --- |
+| `md` | `size/control/chip` · 36 | 12 | AI quick actions |
+| `sm` | `size/control/toolbar` · 28 | 10 | AI toolbar; the icon-only chip is 28 × 28 |
+
+## States
+
+Only default is observed; the others were approved by Mary on 2026-09-21.
+
+| State | Treatment |
+| --- | --- |
+| Default | fill `surface/glass` |
+| Hover | fill `surface/glass-hover` |
+| Pressed | fill `surface/glass-pressed` |
+| Focus-visible | 1 px ring outside, `border/focus` |
+| Disabled | `opacity/disabled` (40%) |
+
+## Usage
+
+| Screen element | Variant | Settings |
+| --- | --- | --- |
+| Quick actions (3 suggestions) | md · default | label per suggestion |
+| Attach file | sm · default | icon `paperclip` |
+| Mic | sm · icon-only | icon `mic` |
+
+The Mic button is a Chip, not an IconButton, because it sits in the same toolbar row with the same translucent fill.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Height md / sm', tokens: ['size/control/chip', 'size/control/toolbar'] },
+  { part: 'Padding left and right, md / sm', tokens: ['dimension/12', 'dimension/10'] },
+  { part: 'Gap', tokens: ['dimension/8'] },
+  { part: 'Radius', tokens: ['radius/full'] },
+  { part: 'Fill', tokens: ['surface/glass', 'surface/glass-hover', 'surface/glass-pressed'] },
+  { part: 'Label', tokens: ['text/muted'], style: 'typography/caption-strong' },
+  { part: 'Icon', tokens: ['size/icon/sm', 'icon/strong'] },
+  { part: 'Focus ring', tokens: ['border/focus', 'borderWidth/hairline'] },
+  { part: 'Disabled', tokens: ['opacity/disabled'] },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `size` | `'md' \| 'sm'` | `'md'` | Figma `size`. |
+| `iconOnly` | `boolean` | `false` | Figma `layout = icon-only`. Requires `aria-label`. |
+| `icon` | glyph name | none | Figma `showIcon` + `LeadingIcon`. |
+| `disabled` | `boolean` | `false` | Figma `state = disabled`. |
+| `children` | `string` | | Figma `label`. |
+
+## Accessibility
+
+From Figma: chips are buttons and the label is the accessible name; the icon-only Mic chip needs an `aria-label` ("Voice input"). The 28 px target is above the 24 px minimum. Muted text on the lavender panel "should be re-checked for contrast (about 4:1)". "Keyboard and screen-reader behaviour need implementation validation."
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| Observed | Fill was white 44% on quick actions and white 50% on the toolbar. One fill now. |
+| Observed | Quick actions had asymmetric padding (12 left, 14 right). Symmetric 12 now. |
+| Observed | Text was 12 Medium without a style → `typography/caption-strong`. Toolbar icons were 14–15 px and are 16 px. |
+
+## Source discrepancies
+
+| Topic | Documentation text | Live file |
+| --- | --- | --- |
+| Gap | `dimension/6` | `dimension/8` is bound on the variants |
+| Fill | Anatomy says `alpha/white-50` | The semantic `surface/glass` (which aliases it) is bound |

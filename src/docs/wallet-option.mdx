@@ -1,0 +1,72 @@
+{/* Source: Figma page "wallet-option", documentation frame and component descriptions, read 2026-10-07. */}
+
+## Composition
+
+Molecule. Two components: **WalletOption** (state default / hover / selected) is a row with coin, name, type and balance; **ExternalOption** is a row with an icon and a two-line title.
+
+| Nested component | Instances | Note |
+| --- | --- | --- |
+| icon-transactions | 1 | Coin icon, an external library instance |
+| Icon | 1 | Check (WalletOption), leading icon (ExternalOption) |
+
+Evidence in Figma: the rows of the From / To dropdown originals.
+
+## States
+
+| WalletOption state | Fill | Source status |
+| --- | --- | --- |
+| `default` | none | Observed |
+| `hover` | `surface/muted` | Proposed in Figma, marked APPROVED |
+| `selected` | `surface/accent-subtle` | Observed |
+
+<Callout title="The check is switched off in the panels" kind="warning">
+The documentation describes the selected row as fill plus a check (Icon positive). The DropdownPanel description, written later, says the check was removed so that the amount does not shift: `showCheck` exists and defaults to false. The portal keeps `showCheck` off by default.
+</Callout>
+
+Focus, pressed and disabled states are <NotDocumented />.
+
+## Usage
+
+Inside DropdownPanel.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Row radius', tokens: ['radius/10'] },
+  { part: 'Row padding, gap', tokens: ['dimension/8', 'dimension/10'] },
+  { part: 'Row fill, hover / selected', tokens: ['surface/muted', 'surface/accent-subtle'] },
+  { part: 'Title, amount', tokens: ['text/primary'] },
+  { part: 'Subtitle', tokens: ['text/muted'] },
+]} />
+
+Figma reports 3 spacing values not bound to variables.
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Component | Prop | Type | Notes |
+| --- | --- | --- | --- |
+| WalletOption | `title`, `subtitle`, `amount` | `string` | Figma text properties, same names. |
+| WalletOption | `selected` | `boolean` | Figma `state = selected`. |
+| WalletOption | `showCheck` | `boolean` | Figma `showCheck`, default false. The developer mapping maps it to `selected`; the portal keeps the two apart because the drawn panels select without a check. |
+| WalletOption | `coin` | `'USDT' \| 'USDC' \| 'EUR'` | <Proposed /> The coin icons are redrawn in the portal; in Figma they are external library instances. |
+| WalletOption, ExternalOption | `onSelect` | `() => void` | <Proposed /> |
+| ExternalOption | `icon`, `title`, `subtitle` | | Figma `title` and `subtitle`; `icon` is <Proposed />. |
+
+## Accessibility
+
+From Figma: each row is an option with the amount announced. The portal renders `role="option"` with `aria-selected`; the amount is part of the option's text.
+
+Verified gap: no focus state is drawn. The portal shows the system 1 px `border/focus` ring. <Proposed />
+
+## Edge cases and decisions
+
+| Status in Figma | Finding |
+| --- | --- |
+| APPROVED | Hover state (fill `surface/muted`) is proposed; default and selected are observed. |
+| Observed | Selected row = fill `surface/accent-subtle` (#ede9f9 merged) and a check (Icon positive). |

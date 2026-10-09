@@ -1,0 +1,33 @@
+{/* Source: Figma page "detail-row", read 2026-10-07. */}
+
+## Composition
+
+A single component built from plain frames and text: a label on the left and a value on the right, space-between.
+
+## Usage
+
+Inside the detail card of a modal: Merchant, Card, Verification, Converted, Rate, Fees. Evidence: 6 rows in the Confirm payment and Convert success modals.
+
+## Design properties
+
+<DesignProperties />
+
+## Tokens
+
+<TokenTable rows={[
+  { part: 'Label', tokens: ['text/muted'], style: 'typography/body-sm' },
+  { part: 'Value', tokens: ['text/primary'], style: 'typography/body-sm-strong' },
+]} />
+
+## Implementation
+
+<StatusBadge status="Portal implementation" /> No production package exists. This is the API of the preview library in this portal, pending developer validation.
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `label` | `string` | Figma `label`. Rendered as `dt`. |
+| `value` | `string` | Figma `value`. Rendered as `dd`. |
+
+## Accessibility
+
+From Figma: use a description list (`dt` / `dd`). The portal renders each row as a `dt` / `dd` pair; place the rows inside a `dl`.
