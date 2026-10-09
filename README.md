@@ -96,6 +96,19 @@ dropdowns stay inside their frame.
 anchors, for example `#variants-and-states` or `#token-surface-control`. Catalog filters live in the query string.
 When hosting, serve `index.html` for unknown paths (SPA fallback).
 
+## Deployment (GitHub Pages)
+
+`.github/workflows/deploy.yml` builds the site and publishes it on every push to `main`. One-time setup: in
+**Settings → Pages → Build and deployment → Source**, choose **GitHub Actions**. The site is then served at
+`https://<owner>.github.io/<repository>/`; progress and errors are in the **Actions** tab.
+
+The workflow builds with `BASE_PATH=/<repository>/` (read by `vite.config.ts`) so that all links, previews and token
+downloads work under the sub-path, and copies `index.html` to `404.html` so deep links and refresh work. Locally the
+base path stays `/`.
+
+A GitHub Pages site of a public repository is public. Do not publish real customer data; all sample data in the
+portal is synthetic.
+
 ## Updating from Figma
 
 Updates are **manual**; nothing syncs automatically.
@@ -123,7 +136,6 @@ Updates are **manual**; nothing syncs automatically.
 - Six foundation pages (Typography, Dimensions, Radius, Borders and opacity, Gradients, Shadows and glass) are plain token tables for now.
 - Several translucent tokens are drawn opaque in Figma, because the paint opacity there is 100%. The portal follows the token value. This is flagged on the affected pages.
 - Discrepancies between Figma documentation and components are listed in `docs/stage-3-notes.md` and on each page.
-- Not deployed. The site runs locally only.
 
 ## Documents
 

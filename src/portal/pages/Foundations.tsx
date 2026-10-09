@@ -82,8 +82,8 @@ function ColourPage() {
       <h2 id="export">Export</h2>
       <p>Both files are generated from the same Figma extract as this page.</p>
       <ul className="p-downloads">
-        <li><a href="/tokens/tokens.css" download>tokens.css</a><span className="p-muted"> CSS custom properties; aliases are kept as <code>var()</code> references.</span></li>
-        <li><a href="/tokens/tokens.json" download>tokens.json</a><span className="p-muted"> Design Tokens format; aliases are kept as <code>{'{collection.path}'}</code> references. Schema: <code>docs/token-schema.md</code> in the project.</span></li>
+        <li><a href={`${import.meta.env.BASE_URL}tokens/tokens.css`} download>tokens.css</a><span className="p-muted"> CSS custom properties; aliases are kept as <code>var()</code> references.</span></li>
+        <li><a href={`${import.meta.env.BASE_URL}tokens/tokens.json`} download>tokens.json</a><span className="p-muted"> Design Tokens format; aliases are kept as <code>{'{collection.path}'}</code> references. Schema: <code>docs/token-schema.md</code> in the project.</span></li>
       </ul>
 
       <div className="p-filters p-filters--sticky">

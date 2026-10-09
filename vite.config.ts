@@ -33,6 +33,8 @@ function docsIndex(): Plugin {
 }
 
 export default defineConfig({
+  // Site root path. '/' locally; the GitHub Pages workflow sets BASE_PATH=/<repository>/.
+  base: process.env.BASE_PATH ?? '/',
   plugins: [docsIndex(), { enforce: 'pre', ...mdx({ remarkPlugins: [remarkGfm], providerImportSource: '@mdx-js/react' }) }, react()],
   // Two documents: the portal (index.html, a single-page app with history routing) and the isolated preview frame.
   build: { rollupOptions: { input: { main: resolve(root, 'index.html'), preview: resolve(root, 'preview.html') } } },

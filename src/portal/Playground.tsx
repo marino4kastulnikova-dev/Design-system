@@ -71,7 +71,7 @@ export function Playground({ slug }: { slug: string }) {
 
       <div className="p-play__body">
         <div className="p-play__stage">
-          <iframe ref={ref} title={`${slug} live preview`} src={`/preview.html?c=${slug}&view=playground`} style={{ width: viewport ?? '100%', minHeight: stageHeight }} />
+          <iframe ref={ref} title={`${slug} live preview`} src={`${import.meta.env.BASE_URL}preview.html?c=${slug}&view=playground`} style={{ width: viewport ?? '100%', minHeight: stageHeight }} />
         </div>
         <form className="p-play__controls" aria-label="Preview controls" onSubmit={(e) => e.preventDefault()}>
           {visible.map((c) => {
@@ -106,10 +106,10 @@ export function Playground({ slug }: { slug: string }) {
 export function Matrix({ slug }: { slug: string }) {
   const [height, setHeight] = useState(320);
   const { ref } = useFrame((data) => { if (data.type === 'height') setHeight(Number(data.height)); });
-  return <iframe ref={ref} className="p-matrix" title={`${slug} variants and states`} src={`/preview.html?c=${slug}&view=matrix`} style={{ height }} />;
+  return <iframe ref={ref} className="p-matrix" title={`${slug} variants and states`} src={`${import.meta.env.BASE_URL}preview.html?c=${slug}&view=matrix`} style={{ height }} />;
 }
 
 /** Non-interactive thumbnail for catalog cards. */
 export function Thumb({ slug }: { slug: string }) {
-  return <iframe className="p-thumb" title="" aria-hidden="true" tabIndex={-1} loading="lazy" src={`/preview.html?c=${slug}&view=playground&thumb=1`} />;
+  return <iframe className="p-thumb" title="" aria-hidden="true" tabIndex={-1} loading="lazy" src={`${import.meta.env.BASE_URL}preview.html?c=${slug}&view=playground&thumb=1`} />;
 }
